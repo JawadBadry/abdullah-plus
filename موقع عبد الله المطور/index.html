@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nazar zone</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0d0f12;
+            color: #f3f4f6;
+        }
+
+        /* الهيدر العلوي */
+        header {
+            background-color: #161a22;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            border-bottom: 1px solid #232936;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #70e000;
+            text-decoration: none;
+        }
+
+        .cart-btn {
+            background-color: #202634;
+            color: white;
+            border: 1px solid #323b4e;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cart-count {
+            background-color: #70e000;
+            color: #0d0f12;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        /* شريط التنقل الفرعي */
+        .nav {
+            background-color: #12151c;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #1c222e;
+        }
+
+        /* تنسيق زر التواصل */
+        .navu {
+            color: #70e000;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            display: inline-block;
+            background-color: #1b202c;
+            border: 1px solid #2a3245;
+        }
+
+        .navu:hover {
+            background-color: #70e000;
+            color: #0d0f12;
+            transform: translateY(-2px);
+        }
+
+        .navu:active {
+            transform: translateY(0px) scale(0.96);
+        }
+
+        /* الشبكة الرئيسية للمنتجات */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .product-card {
+            background: #161a22;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #232936;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background-color: #0d0f12;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #f3f4f6;
+        }
+
+        .product-price {
+            font-size: 18px;
+            color: #70e000;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .add-to-cart-btn {
+            background-color: #70e000;
+            color: #0d0f12;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .add-to-cart-btn:hover {
+            background-color: #5cb800;
+        }
+
+        /* النافذة الجانبية للسلة */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 350px;
+            height: 100%;
+            background-color: #161a22;
+            border-right: 1px solid #232936;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.6);
+            transition: left 0.3s ease;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .cart-sidebar.open {
+            left: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #232936;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            color: #f3f4f6;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #9ca3af;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #232936;
+            padding-bottom: 10px;
+            color: #d1d5db;
+        }
+
+        .cart-total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid #232936;
+            color: #70e000;
+        }
+
+        .clear-cart-btn {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: background-color 0.2s ease;
+        }
+
+        .clear-cart-btn:hover {
+            background-color: #dc2626;
+        }
+
+        .modal-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- نافذة التحذير للحذف -->
+    <div id="customModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); place-items: center; z-index: 2000;">
+        <div style="background-color: #161a22; border: 1px solid #70e000; padding: 30px; border-radius: 12px; text-align: center; max-width: 400px; box-shadow: 0 0 25px rgba(72, 255, 0, 0.8);">
+            <h3 style="color: #ef4444; margin-top: 0;">تنبيه هام!</h3>
+            <p style="color: #d1d5db; font-size: 16px;">هل أنت متأكد من رغبتك في مسح جميع المنتجات من السلة؟</p>
+            <br>
+            <button onclick="confirmReset()" class="modal-btn" style="background-color: #ef4444; color: white; border: none;">نعم، احذف</button>
+            <button onclick="hideResetModal()" class="modal-btn" style="background-color: #202634; color: #ffffff; border: 1px solid #70e000;">تراجع</button>
+        </div>
+    </div>
+
+    <!-- الهيدر -->
+    <header>
+        <a href="#" class="logo">Brainrot zone</a>
+        <button class="cart-btn" onclick="toggleCart()">
+            🛒 السلة <span class="cart-count" id="cart-count">0</span>
+        </button>
+    </header>
+    
+    <div class="nav">
+        <a href="https://wa.me/966559912398" class="navu">التواصل</a>
+    </div>
+    
+    <div class="products-grid">
+        <!-- منتج 1 -->
+        <div class="product-card">
+            <img src="image.png" alt="منتج 1" class="product-image">
+            <div class="product-title">سماعات لاسلكية عالية الجودة</div>
+            <div class="product-price">199 ر.س</div>
+            <button class="add-to-cart-btn" onclick="addToCart('سماعات لاسلكية', 199)">إضافة إلى السلة</button>
+        </div>
+
+        <!-- منتج 2 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/200" alt="منتج 2" class="product-image">
+            <div class="product-title">ساعة ذكية مقاومة للماء</div>
+            <div class="product-price">299 ر.س</div>
+            <button class="add-to-cart-btn" onclick="addToCart('ساعة ذكية', 299)">إضافة إلى السلة</button>
+        </div>
+
+        <!-- منتج 3 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/200" alt="منتج 3" class="product-image">
+            <div class="product-title">حامل هاتف للسيارة</div>
+            <div class="product-price">49 ر.س</div>
+            <button class="add-to-cart-btn" onclick="addToCart('حامل هاتف', 49)">إضافة إلى السلة</button>
+        </div>
+
+        <!-- منتج 4 -->
+        <div class="product-card">
+            <img src="https://via.placeholder.com/200" alt="منتج 4" class="product-image">
+            <div class="product-title">شاحن سريع 65 واط</div>
+            <div class="product-price">89 ر.س</div>
+            <button class="add-to-cart-btn" onclick="addToCart('شاحن سريع', 89)">إضافة إلى السلة</button>
+        </div>
+    </div>
+
+    <!-- نافذة السلة الجانبية -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>سلة التسوق</h3>
+            <button class="close-btn" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <!-- المنتجات المضافة تظهر هنا -->
+        </div>
+        <div class="cart-total" id="cart-total">
+            المجموع: 0 ر.س
+        </div>
+        <br>
+        <div style="text-align: center;">
+            <button class="clear-cart-btn" onclick="showResetModal()">تفريغ السلة 🗑️</button>
+            <button class="add-to-cart-btn" onclick="checkoutWhatsApp()">الشراء عبر واتساب</button>
+        </div>
+    </div>
+
+    <!-- السكربت لإدارة السلة والواتساب والنافذة التنبيهية -->
+    <script>
+        let cart = JSON.parse(localStorage.getItem('savedCart')) || [];
+        let total = 0;
+
+        updateCartUI();
+
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('open');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            saveCartToStorage();
+            updateCartUI();
+        }
+
+        function saveCartToStorage() {
+            localStorage.setItem('savedCart', JSON.stringify(cart));
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const cartTotal = document.getElementById('cart-total');
+
+            cartItemsContainer.innerHTML = '';
+            total = 0;
+
+            cart.forEach(item => {
+                total += item.price;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `<span>${item.name}</span> <span>${item.price} ر.س</span>`;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+
+            cartCount.textContent = cart.length;
+            cartTotal.textContent = `المجموع: ${total} ر.س`;
+        }
+
+        function showResetModal() {
+            if (cart.length === 0) {
+                alert('السلة فارغة بالفعل!');
+                return;
+            }
+            document.getElementById('customModal').style.display = 'grid';
+        }
+
+        function hideResetModal() {
+            document.getElementById('customModal').style.display = 'none';
+        }
+
+        function confirmReset() {
+            cart = [];
+            localStorage.removeItem('savedCart');
+            updateCartUI();
+            hideResetModal();
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                alert('السلة فارغة! يرجى إضافة منتجات أولاً.');
+                return;
+            }
+
+            const phoneNumber = '966559912398'; 
+
+            let message = 'مرحباً، أرغب في طلب المنتجات التالية:\n\n';
+
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.name} - ${item.price} ر.س\n`;
+            });
+
+            message += `\nالمجموع الكلي: ${total} ر.س`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodedMessage}`;
+
+            window.location.href = whatsappUrl;
+        }
+    </script>
+</body>
+</html>
